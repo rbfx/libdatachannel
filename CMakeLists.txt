@@ -222,17 +222,17 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 endif()
 add_library(Usrsctp::Usrsctp ALIAS usrsctp)
 
-add_library(datachannel SHARED
-	${LIBDATACHANNEL_SOURCES}
-	${LIBDATACHANNEL_HEADERS}
-	${LIBDATACHANNEL_IMPL_SOURCES}
-	${LIBDATACHANNEL_IMPL_HEADERS})
-set_target_properties(datachannel PROPERTIES
-	VERSION ${PROJECT_VERSION}
-	SOVERSION ${PROJECT_VERSION}
-	CXX_STANDARD 17
-	CXX_VISIBILITY_PRESET default)
-target_compile_definitions(datachannel PRIVATE RTC_EXPORTS)
+#add_library(datachannel SHARED
+#	${LIBDATACHANNEL_SOURCES}
+#	${LIBDATACHANNEL_HEADERS}
+#	${LIBDATACHANNEL_IMPL_SOURCES}
+#	${LIBDATACHANNEL_IMPL_HEADERS})
+#set_target_properties(datachannel PROPERTIES
+#	VERSION ${PROJECT_VERSION}
+#	SOVERSION ${PROJECT_VERSION}
+#	CXX_STANDARD 17
+#	CXX_VISIBILITY_PRESET default)
+#target_compile_definitions(datachannel PRIVATE RTC_EXPORTS)
 
 add_library(datachannel-static STATIC EXCLUDE_FROM_ALL
 	${LIBDATACHANNEL_SOURCES}
@@ -245,13 +245,13 @@ set_target_properties(datachannel-static PROPERTIES
 target_compile_definitions(datachannel-static PRIVATE RTC_EXPORTS)
 target_compile_definitions(datachannel-static PUBLIC RTC_STATIC)
 
-target_include_directories(datachannel PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>)
-target_include_directories(datachannel PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/rtc)
-target_include_directories(datachannel PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_link_libraries(datachannel PRIVATE Threads::Threads)
-target_link_libraries(datachannel PRIVATE Usrsctp::Usrsctp plog::plog)
+#target_include_directories(datachannel PUBLIC
+#    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+#    $<INSTALL_INTERFACE:include>)
+#target_include_directories(datachannel PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/rtc)
+#target_include_directories(datachannel PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+#target_link_libraries(datachannel PRIVATE Threads::Threads)
+#target_link_libraries(datachannel PRIVATE Usrsctp::Usrsctp plog::plog)
 
 target_include_directories(datachannel-static PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -262,23 +262,23 @@ target_link_libraries(datachannel-static PRIVATE Threads::Threads)
 target_link_libraries(datachannel-static PRIVATE Usrsctp::Usrsctp plog::plog)
 
 if(WIN32)
-	target_link_libraries(datachannel PUBLIC ws2_32) # winsock2
+#	target_link_libraries(datachannel PUBLIC ws2_32) # winsock2
 	target_link_libraries(datachannel-static PUBLIC ws2_32) # winsock2
 endif()
 
 if (NO_WEBSOCKET)
-	target_compile_definitions(datachannel PUBLIC RTC_ENABLE_WEBSOCKET=0)
+#	target_compile_definitions(datachannel PUBLIC RTC_ENABLE_WEBSOCKET=0)
 	target_compile_definitions(datachannel-static PUBLIC RTC_ENABLE_WEBSOCKET=0)
 else()
-	target_compile_definitions(datachannel PUBLIC RTC_ENABLE_WEBSOCKET=1)
+#	target_compile_definitions(datachannel PUBLIC RTC_ENABLE_WEBSOCKET=1)
 	target_compile_definitions(datachannel-static PUBLIC RTC_ENABLE_WEBSOCKET=1)
 endif()
 
 if(NO_MEDIA)
-	target_compile_definitions(datachannel PUBLIC RTC_ENABLE_MEDIA=0)
+#	target_compile_definitions(datachannel PUBLIC RTC_ENABLE_MEDIA=0)
 	target_compile_definitions(datachannel-static PUBLIC RTC_ENABLE_MEDIA=0)
 else()
-	target_compile_definitions(datachannel PUBLIC RTC_ENABLE_MEDIA=1)
+#	target_compile_definitions(datachannel PUBLIC RTC_ENABLE_MEDIA=1)
 	target_compile_definitions(datachannel-static PUBLIC RTC_ENABLE_MEDIA=1)
 	if(USE_SYSTEM_SRTP)
 		find_package(libSRTP REQUIRED)
@@ -340,32 +340,32 @@ else()
 		endif()
 	endif()
 	find_package(OpenSSL REQUIRED)
-	target_compile_definitions(datachannel PRIVATE USE_GNUTLS=0)
+#	target_compile_definitions(datachannel PRIVATE USE_GNUTLS=0)
 	target_compile_definitions(datachannel-static PRIVATE USE_GNUTLS=0)
-	target_link_libraries(datachannel PRIVATE OpenSSL::SSL)
+#	target_link_libraries(datachannel PRIVATE OpenSSL::SSL)
 	target_link_libraries(datachannel-static PRIVATE OpenSSL::SSL)
 endif()
 
 if (USE_NICE)
 	find_package(LibNice REQUIRED)
-	target_compile_definitions(datachannel PRIVATE USE_NICE=1)
+#	target_compile_definitions(datachannel PRIVATE USE_NICE=1)
 	target_compile_definitions(datachannel-static PRIVATE USE_NICE=1)
-	target_link_libraries(datachannel PRIVATE LibNice::LibNice)
+#	target_link_libraries(datachannel PRIVATE LibNice::LibNice)
 	target_link_libraries(datachannel-static PRIVATE LibNice::LibNice)
 else()
-	target_compile_definitions(datachannel PRIVATE USE_NICE=0)
+#	target_compile_definitions(datachannel PRIVATE USE_NICE=0)
 	target_compile_definitions(datachannel-static PRIVATE USE_NICE=0)
 	if(USE_SYSTEM_JUICE)
 		find_package(LibJuice REQUIRED)
-		target_compile_definitions(datachannel PRIVATE RTC_SYSTEM_JUICE=1)
+#		target_compile_definitions(datachannel PRIVATE RTC_SYSTEM_JUICE=1)
 		target_compile_definitions(datachannel-static PRIVATE RTC_SYSTEM_JUICE=1)
-		target_link_libraries(datachannel PRIVATE LibJuice::LibJuice)
+#		target_link_libraries(datachannel PRIVATE LibJuice::LibJuice)
 		target_link_libraries(datachannel-static PRIVATE LibJuice::LibJuice)
 	else()
 		add_subdirectory(deps/libjuice EXCLUDE_FROM_ALL)
-		target_compile_definitions(datachannel PRIVATE RTC_SYSTEM_JUICE=0)
+#		target_compile_definitions(datachannel PRIVATE RTC_SYSTEM_JUICE=0)
 		target_compile_definitions(datachannel-static PRIVATE RTC_SYSTEM_JUICE=0)
-		target_link_libraries(datachannel PRIVATE LibJuice::LibJuiceStatic)
+#		target_link_libraries(datachannel PRIVATE LibJuice::LibJuiceStatic)
 		target_link_libraries(datachannel-static PRIVATE LibJuice::LibJuiceStatic)
 	endif()
 endif()
@@ -375,27 +375,28 @@ if(CAPI_STDCALL)
 	target_compile_definitions(datachannel-static PUBLIC CAPI_STDCALL)
 endif()
 
-set_target_properties(datachannel PROPERTIES EXPORT_NAME LibDataChannel)
-add_library(LibDataChannel::LibDataChannel ALIAS datachannel)
+#set_target_properties(datachannel PROPERTIES EXPORT_NAME LibDataChannel)
+#add_library(LibDataChannel::LibDataChannel ALIAS datachannel)
 
 set_target_properties(datachannel-static PROPERTIES EXPORT_NAME LibDataChannelStatic)
 add_library(LibDataChannel::LibDataChannelStatic ALIAS datachannel-static)
 
 if(NOT MSVC)
-	target_compile_options(datachannel PRIVATE -Wall -Wextra)
+#	target_compile_options(datachannel PRIVATE -Wall -Wextra)
 	target_compile_options(datachannel-static PRIVATE -Wall -Wextra)
 endif()
 
 if(WARNINGS_AS_ERRORS)
 	if(MSVC)
-		target_compile_options(datachannel PRIVATE /WX)
+#		target_compile_options(datachannel PRIVATE /WX)
 		target_compile_options(datachannel-static PRIVATE /WX)
 	else()
-		target_compile_options(datachannel PRIVATE -Werror)
+#		target_compile_options(datachannel PRIVATE -Werror)
 		target_compile_options(datachannel-static PRIVATE -Werror)
 	endif()
 endif()
 
+if (FALSE)
 install(TARGETS datachannel EXPORT LibDataChannelTargets
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
@@ -428,6 +429,7 @@ write_basic_package_version_file(
 	COMPATIBILITY SameMajorVersion)
 install(FILES ${CMAKE_BINARY_DIR}/LibDataChannelConfigVersion.cmake
 	DESTINATION lib/cmake/LibDataChannel)
+endif ()
 
 # Tests
 if(NOT NO_TESTS)
@@ -491,3 +493,6 @@ if(NOT NO_EXAMPLES)
 	add_subdirectory(examples/copy-paste-capi)
 endif()
 
+if (NOT URHO3D_MERGE_STATIC_LIBS)
+    install(TARGETS datachannel-static usrsctp plog juice-static EXPORT Urho3D ARCHIVE DESTINATION ${DEST_ARCHIVE_DIR_CONFIG})
+endif ()
